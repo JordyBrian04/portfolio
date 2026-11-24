@@ -13,7 +13,8 @@ const TAU = Math.PI * 2;
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
 /* ───────── DOM ───────── */
-const cv = $('#map'), ctx = cv.getContext('2d');
+const cv = $('#map');
+let ctx = cv.getContext('2d');
 const mini = $('#mini'), mctx = mini.getContext('2d');
 const el = {
   panel: $('#panel'), body: $('#panelBody'), ico: $('#panelIco'), eyebrow: $('#panelEyebrow'), title: $('#panelTitle'),
@@ -35,7 +36,7 @@ const S = {
   px: 1300, py: 950, fa: Math.PI / 2, vx: 0, vy: 0, walk: 0, t: 0, shift: 0,
   cam: { x: 0, y: 0 }, near: null, guide: null, idle: 0,
   introOpen: true, panelOpen: null, classicOpen: false, finale: false,
-  visited: new Set()
+  visited: new Set(), dust: [], spd: 0
 };
 try { JSON.parse(localStorage.getItem('jb-visited') || '[]').forEach(id => S.visited.add(id)); } catch (e) {}
 const byId = Object.fromEntries(Z.map(z => [z.id, z]));
@@ -76,6 +77,8 @@ const PATHS = [
   [[1300, 860], [1300, 1100], [1150, 1100], [1150, 1422], [1380, 1422], [1380, 1362]],
   [[905, 832], [905, 860]]
 ];
+const NAME_RECT = { x: 1330, y: 905, w: 360, h: 195 };
+const BOARD = { x: 2418, y: 1290, w: 150, h: 200 };
 const PONDS = [{ x: 950, y: 300, rx: 170, ry: 80 }, { x: 2340, y: 1010, rx: 85, ry: 55 }];
 const solids = [];
 
@@ -88,8 +91,11 @@ function inZones(x, y, pad) {
   return false;
 }
 function inPond(x, y, pad) { return PONDS.some(p => ((x - p.x) / (p.rx + pad)) ** 2 + ((y - p.y) / (p.ry + pad)) ** 2 < 1); }
+function inRects(x, y, pad) {
+  return [NAME_RECT, BOARD].some(r => x > r.x - pad && x < r.x + r.w + pad && y > r.y - pad && y < r.y + r.h + pad);
+}
 function freeSpot(x, y, pad, pathD) {
-  return !inZones(x, y, pad) && !nearPath(x, y, pathD) && !inPond(x, y, pad) && Math.hypot(x - PLAZA.x, y - PLAZA.y) > PLAZA.r + 50 && Math.hypot(x - 1300, y - 950) > 90;
+  return !inRects(x, y, pad) && !inZones(x, y, pad) && !nearPath(x, y, pathD) && !inPond(x, y, pad) && Math.hypot(x - PLAZA.x, y - PLAZA.y) > PLAZA.r + 50 && Math.hypot(x - 1300, y - 950) > 90;
 }
 
 Z.forEach(z => {
@@ -102,6 +108,7 @@ PONDS.forEach(p => solids.push({ k: 'e', x: p.x, y: p.y, rx: p.rx - 10, ry: p.ry
 solids.push({ k: 'c', x: PLAZA.x, y: PLAZA.y, r: 48 });
 
 const ents = [];           // entités triées en profondeur
+const lamps = [];
 const flora = [];          // décor sans collision
 {
   const r = rnd(2026);
@@ -136,7 +143,7 @@ const flora = [];          // décor sans collision
       for (let d = 160, s = 1; d < len - 60; d += 230, s = -s) {
         const x = a[0] + (b[0] - a[0]) * d / len + nx * 42 * s, y = a[1] + (b[1] - a[1]) * d / len + ny * 42 * s;
         if (Math.hypot(x - PLAZA.x, y - PLAZA.y) < PLAZA.r + 30 || inZones(x, y, 20)) continue;
-        solids.push({ k: 'c', x, y, r: 6 });
+        solids.push({ k: 'c', x, y, r: 6 }); lamps.push({ x, y });
         ents.push({ y, x0: x - 50, x1: x + 50, y0: y - 100, y1: y + 10, draw: () => drawLamp(x, y) });
       }
     }
@@ -149,6 +156,8 @@ Z.forEach(z => {
 ents.push({ y: PLAZA.y + 44, x0: PLAZA.x - 90, x1: PLAZA.x + 90, y0: PLAZA.y - 110, y1: PLAZA.y + 70, draw: drawFountain });
 const courtZ = byId.interests;
 const ball = { x: courtZ.x + courtZ.w / 2, y: courtZ.y + courtZ.h / 2 - 50, vx: 0, vy: 0 };
+solids.push({ k: 'r', x: BOARD.x, y: BOARD.y, w: BOARD.w, h: BOARD.h });
+ents.push({ y: BOARD.y + BOARD.h, x0: BOARD.x - 30, x1: BOARD.x + BOARD.w + 30, y0: BOARD.y - 20, y1: BOARD.y + BOARD.h + 30, draw: () => drawBoard() });
 
 /* ───────── Dessin : décor ───────── */
 let grass = null;
@@ -187,6 +196,7 @@ function drawGround(t) {
   [70, 112].forEach(r => { ctx.beginPath(); ctx.arc(PLAZA.x, PLAZA.y, r, 0, TAU); ctx.stroke(); });
   ctx.font = '800 15px Sora, system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = 'rgba(120,98,60,.75)';
   ctx.fillText('BIENVENUE', PLAZA.x, PLAZA.y + 126);
+  drawNameSign();
   // lueur des portes
   Z.forEach(z => {
     if (z.type === 'court') return;
@@ -489,6 +499,70 @@ function drawGuide() {
   ctx.strokeText(txt, lx, ly); ctx.fillText(txt, lx, ly);
 }
 
+/* ───────── Nom au sol, tableau des scores, crépuscule, bannières ───────── */
+function drawNameSign() {
+  const cx = NAME_RECT.x + NAME_RECT.w / 2;
+  ctx.save(); ctx.textAlign = 'center'; ctx.font = '800 80px Sora, system-ui, sans-serif';
+  ['JORDY', 'BRIAN', 'GBOKO'].forEach((tx, i) => {
+    ctx.save(); ctx.translate(cx, NAME_RECT.y + 56 + i * 56); ctx.scale(1, .62);
+    ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.fillText(tx, 16, 30);
+    for (let k = 16; k > 0; k--) { ctx.fillStyle = k > 8 ? '#16306a' : '#1f3f8c'; ctx.fillText(tx, 0, k * 1.1); }
+    const g = ctx.createLinearGradient(0, -62, 0, 6); g.addColorStop(0, '#a9d2ff'); g.addColorStop(1, '#4da3ff');
+    ctx.fillStyle = g; ctx.fillText(tx, 0, 0); ctx.lineWidth = 2; ctx.strokeStyle = 'rgba(255,255,255,.75)'; ctx.strokeText(tx, 0, 0);
+    ctx.restore();
+  });
+  ctx.restore();
+}
+function drawBoard() {
+  const b = BOARD, list = (window.hoopsBoard && window.hoopsBoard.list) || [];
+  ctx.fillStyle = 'rgba(0,0,0,.22)'; ell(b.x + b.w / 2 + 10, b.y + b.h + 2, b.w / 2 + 12, 10); ctx.fill();
+  ctx.fillStyle = '#5a4630'; ctx.fillRect(b.x + 20, b.y + b.h - 34, 10, 36); ctx.fillRect(b.x + b.w - 30, b.y + b.h - 34, 10, 36);
+  ctx.fillStyle = '#0f1c33'; rr(b.x, b.y, b.w, b.h - 28, 12); ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = '#ff9a4d'; ctx.stroke();
+  ctx.textAlign = 'center'; ctx.fillStyle = '#ff9a4d'; ctx.font = '800 17px Sora, sans-serif'; ctx.fillText('TOP 10', b.x + b.w / 2, b.y + 27);
+  ctx.font = '600 11px Inter, sans-serif';
+  for (let i = 0; i < 10; i++) {
+    const y = b.y + 47 + i * 12, r = list[i];
+    ctx.textAlign = 'left'; ctx.fillStyle = i < 3 ? '#ffd166' : '#9fb0d0'; ctx.fillText(String(i + 1), b.x + 12, y);
+    ctx.fillStyle = r ? '#fff' : 'rgba(255,255,255,.25)'; ctx.fillText(r ? r.name.slice(0, 11) : '- - -', b.x + 30, y);
+    ctx.textAlign = 'right'; ctx.fillText(r ? String(r.score) : '', b.x + b.w - 12, y);
+  }
+}
+function drawDusk() {
+  ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalCompositeOperation = 'multiply';
+  const g = ctx.createLinearGradient(0, 0, 0, cv.height); g.addColorStop(0, 'rgb(255,224,198)'); g.addColorStop(1, 'rgb(216,188,224)');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, cv.width, cv.height);
+  const mn = Math.min(cv.width, cv.height), mx = Math.max(cv.width, cv.height);
+  const v = ctx.createRadialGradient(cv.width / 2, cv.height / 2, mn * .35, cv.width / 2, cv.height / 2, mx * .75);
+  v.addColorStop(0, 'rgb(255,255,255)'); v.addColorStop(1, 'rgb(118,100,162)');
+  ctx.fillStyle = v; ctx.fillRect(0, 0, cv.width, cv.height); ctx.restore();
+  ctx.save(); ctx.globalCompositeOperation = 'screen';
+  const glow = (x, y, r, c, a) => { const q = ctx.createRadialGradient(x, y, 2, x, y, r); q.addColorStop(0, `rgba(${c},${a})`); q.addColorStop(1, `rgba(${c},0)`); ctx.fillStyle = q; ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.fill(); };
+  const vwW = vw / zoom, vhW = vh / zoom, x0 = S.cam.x - 160, x1 = S.cam.x + vwW + 160, y0 = S.cam.y - 160, y1 = S.cam.y + vhW + 160;
+  for (const l of lamps) if (l.x > x0 && l.x < x1 && l.y > y0 && l.y < y1) glow(l.x, l.y - 62, 130, '255,196,110', .55);
+  Z.forEach(z => { if (z.door[0] > x0 && z.door[0] < x1 && z.door[1] > y0 && z.door[1] < y1) { const [r, g2, b] = hex(z.color); glow(z.door[0], z.door[1] - 20, 100, `${r},${g2},${b}`, .3); } });
+  ctx.restore();
+}
+const bannerCache = {};
+function zoneBanner(z) {
+  if (bannerCache[z.id]) return bannerCache[z.id];
+  const bw = z.type === 'court' ? z.w + 100 : z.w + 170, bh = z.type === 'court' ? z.h + 80 : z.h + z.top + 140;
+  const c = document.createElement('canvas'); c.width = 680; c.height = 240; const g = c.getContext('2d');
+  const sc = Math.min(c.width / bw, c.height / bh), cx = z.x + z.w / 2, cy = z.type === 'court' ? z.y + z.h / 2 : z.y + (z.h - z.top) / 2 + 24;
+  const prev = ctx; ctx = g;
+  try {
+    ctx.save(); ctx.setTransform(sc, 0, 0, sc, c.width / 2 - cx * sc, c.height / 2 - cy * sc);
+    if (!grass) grass = makeGrass();
+    ctx.fillStyle = grass; ctx.fillRect(cx - 900, cy - 500, 1800, 1000);
+    ctx.fillStyle = '#c4b184'; ctx.fillRect(z.door[0] - 29, z.y + z.h - 2, 58, 170); ctx.fillStyle = '#e8dab6'; ctx.fillRect(z.door[0] - 24, z.y + z.h - 2, 48, 170);
+    if (z.type !== 'court') { ctx.globalAlpha = .6; ctx.fillStyle = z.color; ell(z.door[0], z.door[1] - 8, 54, 22); ctx.fill(); ctx.globalAlpha = 1; }
+    drawBuilding(z);
+    ctx.restore();
+  } finally { ctx = prev; }
+  g.fillStyle = 'rgba(255,160,80,.16)'; g.fillRect(0, 0, c.width, c.height);
+  const vg = g.createLinearGradient(0, 120, 0, 240); vg.addColorStop(0, 'rgba(11,27,51,0)'); vg.addColorStop(1, 'rgba(11,27,51,.55)'); g.fillStyle = vg; g.fillRect(0, 0, c.width, c.height);
+  return bannerCache[z.id] = c.toDataURL('image/jpeg', .86);
+}
+
 /* ───────── Ambiance ───────── */
 const clouds = Array.from({ length: 7 }, (_, i) => ({ x: i * 420, y: 120 + (i * 263) % 1500, rx: 160 + (i * 37) % 90, ry: 60 + (i * 23) % 30, v: 10 + (i * 7) % 14 }));
 function drawClouds(dt) {
@@ -509,9 +583,10 @@ function render(dt) {
   list.push({ y: S.py + 6, draw: drawPlayer }, { y: ball.y, draw: drawBall });
   list.sort((a, b) => a.y - b.y);
   for (const e of list) e.draw();
+  drawClouds(dt);
+  drawDusk();
   drawGuide();
   Z.forEach(drawBanner);
-  drawClouds(dt);
   drawMini();
 }
 
@@ -654,13 +729,14 @@ function openZone(z) {
   S.panelOpen = z.id; S.guide = null;
   el.panel.style.setProperty('--z', z.color);
   el.ico.innerHTML = icon(z.icon, 24); el.eyebrow.textContent = z.eyebrow; el.title.textContent = z.title;
-  el.body.innerHTML = z.html; el.body.scrollTop = 0;
+  el.body.innerHTML = '<img class="banner" alt="" src="' + zoneBanner(z) + '">' + z.html; el.body.scrollTop = 0;
   const nx = nextZone(z);
   el.next.innerHTML = `<span>${S.visited.size >= Z.length - 1 && !S.visited.has(z.id) ? 'Dernier lieu découvert' : 'Prochain lieu : ' + nx.name}</span>${icon('arrow', 18)}`;
   el.next.onclick = () => { closePanel(); S.guide = nx.id; };
   el.panel.classList.add('open'); el.panel.setAttribute('aria-hidden', 'false');
   S.visited.add(z.id); try { localStorage.setItem('jb-visited', JSON.stringify([...S.visited])); } catch (e) {}
   renderProgress(); updatePrompt(); countUp(el.body);
+  document.dispatchEvent(new CustomEvent('panel-open', { detail: { id: z.id, root: el.body } }));
 }
 function closePanel() {
   el.panel.classList.remove('open'); el.panel.setAttribute('aria-hidden', 'true'); S.panelOpen = null; updatePrompt();

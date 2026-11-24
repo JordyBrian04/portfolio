@@ -231,6 +231,9 @@ const ZONES = [
         <div class="card"><div class="card-h"><b>Volley-ball</b></div><p>Coordination et esprit d’équipe.</p></div>
         <div class="card"><div class="card-h"><b>Musique</b></div><p>Le bon rythme pour coder.</p></div>
       </div>
+      <div class="btns"><button class="btn primary" type="button" data-hoops-open style="border:0;cursor:pointer">${icon('activity', 18)} Jouer au lancer de paniers</button></div>
+      <h4>Top 10 des tireurs</h4>
+      <ol class="top10" data-top10></ol>
       <div class="hint">Astuce : pousse le ballon sur le terrain en marchant dessus.</div>`
   },
 

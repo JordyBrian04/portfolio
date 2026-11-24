@@ -1,6 +1,10 @@
 # Site statique : aucun build, Netlify publie la racine du dépôt.
+# La fonction netlify/functions/scores.mjs sert le classement du lancer de paniers.
 [build]
   publish = "."
+
+[functions]
+  directory = "netlify/functions"
 
 [[headers]]
   for = "/*"

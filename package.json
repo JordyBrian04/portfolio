@@ -1,0 +1,9 @@
+{
+  "name": "portfolio-jordy",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Portfolio interactif de Jordy Brian GBOKO",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}
