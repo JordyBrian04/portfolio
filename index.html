@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jordy Brian GBOKO — Développeur Full Stack à Abidjan</title>
+<meta name="description" content="Portfolio interactif de Jordy Brian GBOKO, développeur full stack et administrateur de bases de données (Laravel, Node.js, React, React Native) à Abidjan. Explore la carte pour découvrir mon parcours.">
+<meta name="theme-color" content="#0b1b33">
+<meta property="og:title" content="Jordy Brian GBOKO — Développeur Full Stack">
+<meta property="og:description" content="Explore ma ville : expérience, compétences, projets, formation et contact.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230b1b33'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='28' text-anchor='middle' fill='%234da3ff'%3EJB%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<canvas id="map" aria-label="Carte interactive du portfolio" role="img"></canvas>
+<div class="vignette"></div>
+
+<header class="hud-top">
+  <div class="brand"><img src="assets/jordy.png" alt="" width="40" height="40"><div><b>Jordy Brian GBOKO</b><span>Développeur Full Stack · Web &amp; Mobile</span></div></div>
+  <div class="hud-btns">
+    <button id="btnMenu" class="pill" type="button"></button>
+    <button id="btnClassic" class="pill" type="button"></button>
+  </div>
+</header>
+
+<div id="minimap" aria-hidden="true"><canvas id="mini" width="240" height="157"></canvas></div>
+
+<div id="progress" aria-live="polite"><div class="bar"><i id="progBar"></i></div><span id="progTxt"></span></div>
+
+<button id="prompt" type="button" hidden></button>
+
+<div id="joy" aria-hidden="true"><div id="stick"></div></div>
+<button id="btnAct" type="button" hidden aria-label="Entrer">E</button>
+
+<aside id="panel" aria-hidden="true" role="dialog" aria-modal="false">
+  <div class="panel-head">
+    <div class="panel-ico" id="panelIco"></div>
+    <div class="panel-titles"><span id="panelEyebrow"></span><h2 id="panelTitle"></h2></div>
+    <button id="panelClose" class="x" type="button" aria-label="Fermer"></button>
+  </div>
+  <div class="panel-body" id="panelBody"></div>
+  <div class="panel-foot"><button id="panelNext" type="button" class="next"></button></div>
+</aside>
+
+<nav id="menu" aria-hidden="true">
+  <div class="menu-head"><b>Carte du portfolio</b><button id="menuClose" class="x" type="button" aria-label="Fermer"></button></div>
+  <div id="menuList"></div>
+  <p class="menu-hint">Clique sur un lieu pour t’y téléporter.</p>
+</nav>
+
+<section id="classic" aria-hidden="true">
+  <div class="classic-inner">
+    <div class="classic-top">
+      <h1>Jordy Brian GBOKO</h1>
+      <p>Développeur Full Stack — Web &amp; Mobile · Administrateur de bases de données · Abidjan</p>
+      <div class="btns" id="classicBtns"></div>
+    </div>
+    <div id="classicBody"></div>
+  </div>
+  <button id="classicClose" class="pill floating" type="button"></button>
+</section>
+
+<div id="intro">
+  <div class="intro-card">
+    <div class="avatar-ring"><img src="assets/jordy.png" alt="Portrait de Jordy Brian GBOKO" width="132" height="132"></div>
+    <p class="eyebrow">Portfolio interactif</p>
+    <h1>Bonjour, je suis <span>Jordy</span>.</h1>
+    <p class="sub">Développeur full stack &amp; administrateur de bases de données.<br>J’ai construit une petite ville pour te présenter mon parcours : explore-la.</p>
+    <button id="btnStart" class="cta" type="button">Explorer la carte</button>
+    <button id="btnIntroClassic" class="ghost" type="button">Préférer la version CV classique</button>
+    <div class="keys">
+      <span class="desk"><kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd> ou <kbd>Z</kbd><kbd>Q</kbd><kbd>S</kbd><kbd>D</kbd> pour marcher · <kbd>E</kbd> pour entrer</span>
+      <span class="touch">Joystick pour marcher · bouton <b>E</b> pour entrer</span>
+    </div>
+  </div>
+</div>
+
+<div id="toast" role="status"></div>
+<div id="fade"></div>
+
+<noscript><div style="position:fixed;inset:0;background:#0b1b33;color:#fff;padding:32px;font-family:sans-serif;z-index:99"><h1>Jordy Brian GBOKO — Développeur Full Stack</h1><p>Activez JavaScript pour explorer la carte interactive. Contact : briangboko33@gmail.com</p></div></noscript>
+
+<script src="js/data.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
