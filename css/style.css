@@ -179,7 +179,7 @@ kbd{display:inline-block;min-width:26px;padding:3px 7px;margin:0 2px;border-radi
   .brand span{display:none}
   .pill{padding:9px 13px}
   .pill .lbl{display:none}
-  #panel{top:auto;bottom:0;height:80vh;width:100%;border-left:0;border-top:1px solid var(--line);border-radius:24px 24px 0 0;transform:translateY(105%)}
+  #panel{top:auto;bottom:0;height:56vh;width:100%;border-left:0;border-top:1px solid var(--line);border-radius:24px 24px 0 0;transform:translateY(105%)}
   #panel::before{left:0;right:0;top:0;bottom:auto;width:auto;height:4px}
   .panel-head{padding-top:18px}
 }

@@ -616,8 +616,11 @@ function update(dt) {
   const targetShift = (S.panelOpen && vw > 760) ? 250 / zoom : 0;
   S.shift += (targetShift - S.shift) * (1 - Math.exp(-dt * 6));
   const vwW = vw / zoom, vhW = vh / zoom;
-  let tx = S.px - vwW / 2 + S.shift, ty = S.py - 20 - vhW / 2;
-  tx = W > vwW ? clamp(tx, 0, W - vwW + S.shift) : (W - vwW) / 2; ty = H > vhW ? clamp(ty, 0, H - vhW) : (H - vhW) / 2;
+  // mobile : le panneau est un volet en bas, on remonte le bonhomme dans la partie visible
+  const targetY = (S.panelOpen && vw <= 760) ? 20 + 0.2 * vh / zoom : 0;
+  S.shiftY = (S.shiftY || 0) + (targetY - (S.shiftY || 0)) * (1 - Math.exp(-dt * 6));
+  let tx = S.px - vwW / 2 + S.shift, ty = S.py - 20 - vhW / 2 + S.shiftY;
+  tx = W > vwW ? clamp(tx, 0, W - vwW + S.shift) : (W - vwW) / 2; ty = H > vhW ? clamp(ty, 0, H - vhW + S.shiftY * 2.5) : (H - vhW) / 2;
   const k = 1 - Math.exp(-dt * 7); S.cam.x += (tx - S.cam.x) * k; S.cam.y += (ty - S.cam.y) * k;
 }
 
