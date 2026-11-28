@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jordy Brian GBOKO — Développeur Full Stack, Web & Mobile</title>
+<meta name="description" content="Jordy Brian GBOKO, développeur full stack et administrateur de bases de données à Abidjan. Applications web (Laravel, Node.js) et mobiles (React Native) en production. Projets, démos interactives et contact.">
+<meta name="theme-color" content="#f6f3ec">
+<meta property="og:title" content="Jordy Brian GBOKO — Développeur Full Stack">
+<meta property="og:description" content="Applications web et mobiles qui tournent en production. Démos interactives de mes projets.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230b1b33'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='28' text-anchor='middle' fill='%234da3ff'%3EJB%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/museum.css">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<a class="skip" href="#projets">Aller aux projets</a>
+<header class="nav" id="nav">
+  <a class="nav-brand" href="#top"><img src="assets/jordy.png" alt="" width="36" height="36"><span><b>Jordy Brian</b><small>Full Stack · Abidjan</small></span></a>
+  <nav class="nav-links" aria-label="Sections"><a href="#maintenant">En ce moment</a><a href="#projets">Projets</a><a href="#services">Services</a><a href="#parcours">Parcours</a><a href="#contact">Contact</a></nav>
+  <a class="btn-city" href="index.html"><span>Explorer la ville</span> <i aria-hidden="true">↗</i></a>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="hero-text">
+      <p class="eyebrow"><span class="live"></span> Développeur Full Stack · Web &amp; Mobile · Abidjan</p>
+      <h1>Je construis des applications qui tournent <em>en production</em>, pas seulement <em>en démo</em>.</h1>
+      <p class="sub">Développeur full stack et administrateur de bases de données. Depuis 5 ans, je conçois des applications web et mobiles — Laravel, Node.js, React, React Native — et je les fais vivre chaque jour, de la base de données jusqu’au téléphone de l’utilisateur.</p>
+      <div class="hero-cta"><a class="btn dark" href="#projets">Voir mes projets</a><a class="btn line" href="#contact">Me contacter</a><a class="btn wa" href="https://wa.me/2250717207266" target="_blank" rel="noopener" aria-label="Écrire sur WhatsApp">WhatsApp</a></div>
+      <ul class="stats" aria-label="En chiffres">
+        <li><b>5 ans</b><span>de développement</span></li>
+        <li><b>+140 Md</b><span>FCFA de flux de paie audités</span></li>
+        <li><b>8</b><span>projets en construction</span></li>
+      </ul>
+    </div>
+    <div class="hero-demo" style="--c:#265ed7">
+      <div class="demo-tabs" role="tablist" aria-label="Démo en direct">
+        <button type="button" role="tab" data-demo="sika" aria-selected="true">Sika App</button>
+        <button type="button" role="tab" data-demo="swipjob">SwipJob</button>
+        <button type="button" role="tab" data-demo="ivoirecar">IvoireCar</button>
+      </div>
+      <div class="demo-stage"><div class="mu-dev phone" id="heroDev"><div class="mu-notch"></div><div class="mu-screen" id="heroScreen"></div></div></div>
+      <p class="demo-cap"><span class="dot"></span> Démo en direct : touche l’écran. <button type="button" class="link" data-museum-open="sika" id="heroMore">Voir tous les projets dans le musée →</button></p>
+    </div>
+  </section>
+
+  <section class="now" id="maintenant">
+    <div class="sec-head"><p class="kicker">En ce moment</p><h2>Ce sur quoi je travaille <em>aujourd’hui</em>.</h2></div>
+    <div class="now-grid">
+      <article class="now-card">
+        <span class="tag green">Poste actuel · depuis mars 2024</span>
+        <h3>IT Developer &amp; Database Administrator</h3>
+        <p class="org">Southland Ressource Côte d’Ivoire, Abidjan</p>
+        <ul>
+          <li>Je fais tourner un portail web fournisseurs (Laravel, MySQL) utilisé chaque jour.</li>
+          <li>J’ai branché un assistant IA (API Claude) sur une API Node.js : on simule la paie en langage naturel.</li>
+          <li>J’administre les bases du groupe : 4 bases sauvegardées automatiquement chaque jour, 30 jours d’historique.</li>
+        </ul>
+      </article>
+      <article class="now-card">
+        <span class="tag amber">Mission en cours</span>
+        <h3>Consultant technique · eBonus</h3>
+        <p class="org">Application de fidélité, mobile et Laravel</p>
+        <ul><li>J’accompagne l’équipe sur l’architecture, la sécurité et la mise en œuvre.</li><li>Audit de sécurité, correction du parcours PIN, spécification des offres partenaires.</li></ul>
+      </article>
+      <article class="now-card">
+        <span class="tag blue">À côté</span>
+        <h3>8 applications en construction</h3>
+        <p class="org">Mes produits et ceux de mes clients</p>
+        <div class="now-chips" id="nowChips"></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="projects" id="projets">
+    <div class="sec-head"><p class="kicker">Projets</p><h2>Essayez-les, <em>ne les lisez pas</em>.</h2><p class="sec-sub">Chaque projet a sa démo interactive, avec des données fictives fidèles aux vrais écrans.</p></div>
+    <article class="feat" id="featured"></article>
+    <h3 class="grid-title">En construction</h3>
+    <div class="pgrid" id="pgrid"></div>
+  </section>
+
+  <section class="impact" id="realisations">
+    <div class="sec-head"><p class="kicker">Réalisations</p><h2>Ce que j’ai livré <em>en entreprise</em>.</h2></div>
+    <div class="impact-grid">
+      <div class="imp"><b data-count="140" data-prefix="+" data-suffix=" Md">140</b><span>FCFA de flux de paie fournisseurs audités sur deux entités, module correctif en service depuis mai 2026.</span></div>
+      <div class="imp"><b data-count="4">4</b><span>bases MySQL sauvegardées chaque jour, avec rétention de 30 jours et rapport de supervision automatique.</span></div>
+      <div class="imp"><b>1</b><span>portail fournisseurs en production : comptes, livraisons et règlements suivis au quotidien.</span></div>
+      <div class="imp"><b>IA</b><span>API REST sécurisée (JWT, protection SQL) avec un assistant IA qui simule la paie en langage naturel.</span></div>
+    </div>
+  </section>
+
+  <section class="services" id="services">
+    <div class="sec-head"><p class="kicker">Services</p><h2>Ce que je peux <em>faire pour vous</em>.</h2></div>
+    <div class="svc-grid">
+      <div class="svc"><span class="svc-i">⌘</span><h3>Applications web</h3><p>Portails métier, back-offices et API REST en Laravel ou Node.js/Express, sécurisés dès le départ.</p></div>
+      <div class="svc"><span class="svc-i">▢</span><h3>Applications mobiles</h3><p>iOS et Android en React Native (Expo) : hors ligne, notifications, paiement Mobile Money.</p></div>
+      <div class="svc"><span class="svc-i">◎</span><h3>Bases de données</h3><p>Conception, optimisation, sauvegardes automatiques et supervision de MySQL et PostgreSQL.</p></div>
+      <div class="svc"><span class="svc-i">✦</span><h3>IA &amp; automatisation</h3><p>Assistants IA branchés sur vos données, automatisation des tâches répétitives.</p></div>
+    </div>
+    <div class="marquee" aria-label="Technologies"><div class="mq-track" id="mq"></div></div>
+  </section>
+
+  <section class="path" id="parcours">
+    <div class="sec-head"><p class="kicker">Parcours</p><h2>Expérience <em>et formation</em>.</h2></div>
+    <div class="path-grid">
+      <ol class="tline">
+        <li><span>2024 — aujourd’hui</span><b>IT Developer &amp; Database Administrator</b><em>Southland Ressource Côte d’Ivoire</em></li>
+        <li><span>2023 — 2025</span><b>Développeur PHP (freelance)</b><em>OPISMS, Abidjan</em></li>
+        <li><span>2022 — 2024</span><b>Développeur Full Stack</b><em>CIAN, Abidjan</em></li>
+        <li><span>2020 — 2021</span><b>Développeur Full Stack</b><em>Prestel Technologie, Abidjan</em></li>
+      </ol>
+      <ol class="tline edu">
+        <li><span>2023 — 2024</span><b>Licence professionnelle en Informatique</b><em>Gecos Formation, Abidjan</em></li>
+        <li><span>2020 — 2021</span><b>BTS Informatique, développement d’applications</b><em>Gecos Formation (admissible)</em></li>
+        <li><span>2018 — 2019</span><b>Baccalauréat série D</b><em>Lycée Moderne d’Akoupé</em></li>
+        <li><span>Langues</span><b>Français · Anglais (lu, écrit)</b><em>Notions d’espagnol et de japonais</em></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="contact-card">
+      <p class="kicker light">Contact</p>
+      <h2>Un projet en tête ? <em>Parlons-en.</em></h2>
+      <p class="sub">Dites-moi ce que vous voulez construire. Je réponds directement.</p>
+      <div class="pick" role="group" aria-label="Type de projet">
+        <button type="button" data-k="une application mobile">Application mobile</button><button type="button" data-k="une application web">Application web</button><button type="button" data-k="une API">API</button><button type="button" data-k="une base de données">Base de données</button><button type="button" data-k="de l’IA ou de l’automatisation">IA</button>
+      </div>
+      <div class="hero-cta"><a class="btn amber" id="waLink" href="https://wa.me/2250717207266" target="_blank" rel="noopener">Écrire sur WhatsApp</a><a class="btn white" id="mailLink" href="mailto:briangboko33@gmail.com">Envoyer un e-mail</a><a class="btn ghost" href="assets/CV_Jordy_Brian_GBOKO.pdf" download>Télécharger mon CV</a></div>
+    </div>
+  </section>
+</main>
+<footer class="foot"><span>© 2026 Jordy Brian GBOKO · Abidjan, Côte d’Ivoire <span data-visits hidden>· <b data-visits-total>0</b> visites depuis le lancement</span></span><a href="index.html">Explorer la ville ↗</a></footer>
+
+<script src="js/data.js"></script>
+<script src="js/projects.js"></script>
+<script src="js/sims/iris.js"></script>
+<script src="js/sims/sika.js"></script>
+<script src="js/sims/swipjob.js"></script>
+<script src="js/sims/ivoirecar.js"></script>
+<script src="js/sims/eelips.js"></script>
+<script src="js/sims/ebonus.js"></script>
+<script src="js/sims/homefit.js"></script>
+<script src="js/sims/tonty.js"></script>
+<script src="js/sims/agrikonnect.js"></script>
+<script src="js/museum.js"></script>
+<script src="js/site.js"></script>
+<script src="js/visits.js"></script>
+</body>
+</html>

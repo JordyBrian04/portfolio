@@ -55,7 +55,7 @@ const ZONES = [
         <li>La sécurité dès le départ : JWT, protection contre l’injection SQL.</li>
         <li>Je forme les utilisateurs : un outil n’a de valeur que s’il est adopté.</li>
       </ul>
-      <div class="hint">Continue la balade : chaque bâtiment raconte une partie de mon parcours.</div>`
+      <div class="hint">Continue la balade : chaque bâtiment raconte une partie de mon parcours, et le Musée te laisse essayer mes applications.</div>`
   },
 
   /* ───────────── TOUR · EXPÉRIENCE ───────────── */
@@ -135,56 +135,13 @@ const ZONES = [
       <div class="hint">En surbrillance : ce que j’utilise au quotidien.</div>`
   },
 
-  /* ───────────── GALERIE · PROJETS ───────────── */
+  /* ───────────── MUSÉE · PROJETS ───────────── */
   {
-    id: 'projects', name: 'La Galerie', label: 'Réalisations', color: '#ff6f91', icon: 'image', type: 'gallery',
-    x: 1200, y: 1150, w: 360, h: 210, top: 26, door: [1380, 1396],
-    eyebrow: 'Projets & réalisations', title: 'Ce que j’ai livré, et ce que je construis.',
-    html: `
-      <div class="cards">
-        <div class="card feat"><div class="card-h"><b>Sika App</b><span class="tag live">Mobile</span></div>
-          <p>Application mobile de gestion budgétaire, déployée en production sur <b>VPS Linux</b> (Nginx, PM2, HTTPS).</p>
-          <ul><li>Mode hors-ligne avec synchronisation</li><li>Authentification JWT</li><li>Abonnements</li></ul>
-          <div class="tags"><span class="tag">React Native / Expo</span><span class="tag">Node.js</span><span class="tag">PostgreSQL / Supabase</span></div></div>
-        <div class="card"><div class="card-h"><b>Portail web fournisseurs</b><span class="tag">Web</span></div>
-          <p>Suivi des comptes, livraisons et règlements, utilisé quotidiennement en production.</p>
-          <div class="tags"><span class="tag">Laravel</span><span class="tag">MySQL</span></div></div>
-        <div class="card"><div class="card-h"><b>API REST + assistant IA</b><span class="tag">API</span></div>
-          <p>Simulateur de paie en langage naturel propulsé par l’API Anthropic Claude, sécurisé par JWT et middleware SQL.</p>
-          <div class="tags"><span class="tag">Node.js / Express</span><span class="tag">JWT</span><span class="tag">Claude API</span></div></div>
-        <div class="card"><div class="card-h"><b>Audit du système de paie</b><span class="tag">Impact</span></div>
-          <p>Deux entités auditées, <b>+140 milliards FCFA</b> de flux analysés, module correctif en service depuis mai 2026.</p></div>
-        <div class="card"><div class="card-h"><b>Conseil du Coton et de l’Anacarde</b><span class="tag">Web</span></div>
-          <p>Application web conçue pour l’institution.</p></div>
-        <div class="card"><div class="card-h"><b>Site e-commerce WordPress</b><span class="tag">Web</span></div>
-          <p>Intégration complète des moyens de paiement en ligne.</p></div>
-        <div class="card"><div class="card-h"><b>Et aussi…</b></div>
-          <p>Applications mobiles de livraison, de gestion de stock et de tâches, jeux mobiles, portefeuille électronique, site de préinscription scolaire, logiciel de gestion de stock.</p></div>
-      </div>
-      <h4>En construction en ce moment</h4>
-      <div class="cards">
-        <div class="card feat"><div class="card-h"><b>IRIS</b><span class="tag live">Utilisée au quotidien</span></div>
-          <p>Mon assistante IA personnelle sur Mac. Je lui parle : elle comprend, agit à l’écran, gère tâches, mails et agenda, lance mon mode travail de développeur, et retient ce qu’elle apprend dans mon coffre Obsidian.</p>
-          <div class="tags"><span class="tag">Mon produit</span><span class="tag">Swift / AppKit</span><span class="tag">React Native</span><span class="tag">Node.js (MCP)</span><span class="tag">Gemini</span><span class="tag">Claude</span><span class="tag">Whisper</span></div></div>
-        <div class="card"><div class="card-h"><b>SwipJob</b><span class="tag">En construction</span></div>
-          <p>Application mobile de matching d’offres d’emploi pour l’Afrique de l’Ouest, avec un lancement prévu en Côte d’Ivoire.</p>
-          <div class="tags"><span class="tag">Mon produit</span><span class="tag">React Native / Expo</span></div></div>
-        <div class="card"><div class="card-h"><b>IvoireCar</b><span class="tag">En construction</span></div>
-          <p>Application de location de voitures en Côte d’Ivoire : réservation, paiement, notifications SMS / WhatsApp, avec des espaces client, propriétaire et chauffeur.</p>
-          <div class="tags"><span class="tag">Pour un client</span><span class="tag">React Native / Expo</span><span class="tag">Laravel</span><span class="tag">PostgreSQL</span></div></div>
-        <div class="card"><div class="card-h"><b>Tonty</b><span class="tag">En construction</span></div>
-          <p>Tontine digitale : épargne rotative en groupe, cotisations et encaissements par Mobile Money. Interface pensée pour ceux qui lisent peu ou pas : PIN, boutons visuels, langage simple.</p>
-          <div class="tags"><span class="tag">Mon produit</span><span class="tag">Mobile Money</span></div></div>
-        <div class="card"><div class="card-h"><b>AgriKonnect</b><span class="tag">En construction</span></div>
-          <p>Met en relation agriculteurs et acheteurs en Côte d’Ivoire : les producteurs publient produits, photos, prix et stock ; les clients commandent et notent les vendeurs.</p>
-          <div class="tags"><span class="tag">Mon produit</span><span class="tag">React Native / Expo</span><span class="tag">Laravel</span></div></div>
-        <div class="card"><div class="card-h"><b>e-elips</b><span class="tag">En construction</span></div>
-          <p>Services à domicile à Abidjan (plomberie, électricité, ménage, coiffure…) : prestataires classés par distance, demandes à accepter ou refuser, notifications, connexion par téléphone et PIN vérifié par SMS.</p>
-          <div class="tags"><span class="tag">Pour un client</span><span class="tag">React Native / Expo</span><span class="tag">Laravel</span></div></div>
-        <div class="card"><div class="card-h"><b>HomeFit</b><span class="tag">En construction</span></div>
-          <p>Application de sport à domicile : semaine type de 7 jours, 49 exercices avec photos et vidéos, rappels, utilisable hors-ligne.</p>
-          <div class="tags"><span class="tag">Mon produit</span><span class="tag">React Native / Expo</span><span class="tag">TypeScript</span></div></div>
-      </div>`
+    id: 'museum', name: 'Le Musée', label: 'Projets', color: '#ff6f91', icon: 'image', type: 'museum',
+    x: 1200, y: 1150, w: 360, h: 210, top: 64, door: [1380, 1396],
+    eyebrow: 'Musée des projets', title: 'Entre et essaie mes applications.',
+    html: `<p class="lead">Chaque salle présente un projet avec une démo interactive : Sika App, IRIS, SwipJob, IvoireCar, e-elips, eBonus, HomeFit, Tonty et AgriKonnect.</p>
+      <div class="btns"><button class="btn primary" type="button" data-museum-open style="border:0;cursor:pointer">${icon('image', 18)} Entrer dans le musée</button></div>`
   },
 
   /* ───────────── ACADÉMIE · FORMATION ───────────── */

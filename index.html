@@ -14,6 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/museum.css">
 </head>
 <body>
 
@@ -23,6 +24,7 @@
 <header class="hud-top">
   <div class="brand"><img src="assets/jordy.png" alt="" width="40" height="40"><div><b>Jordy Brian GBOKO</b><span>Développeur Full Stack · Web &amp; Mobile</span></div></div>
   <div class="hud-btns">
+    <span class="pill visits" data-visits hidden><span aria-hidden="true">👁</span> <b data-visits-total>0</b><span class="lbl"> visites</span></span>
     <button id="btnMenu" class="pill" type="button"></button>
     <button id="btnClassic" class="pill" type="button"></button>
   </div>
@@ -72,7 +74,7 @@
     <h1>Bonjour, je suis <span>Jordy</span>.</h1>
     <p class="sub">Développeur full stack &amp; administrateur de bases de données.<br>J’ai construit une petite ville pour te présenter mon parcours : explore-la.</p>
     <button id="btnStart" class="cta" type="button">Explorer la carte</button>
-    <button id="btnIntroClassic" class="ghost" type="button">Préférer la version CV classique</button>
+    <button id="btnIntroClassic" class="ghost" type="button">Voir la version site (portfolio classique)</button>
     <div class="keys">
       <span class="desk"><kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd> ou <kbd>Z</kbd><kbd>Q</kbd><kbd>S</kbd><kbd>D</kbd> pour marcher · <kbd>E</kbd> pour entrer</span>
       <span class="touch">Joystick pour marcher · bouton <b>E</b> pour entrer</span>
@@ -86,6 +88,18 @@
 <noscript><div style="position:fixed;inset:0;background:#0b1b33;color:#fff;padding:32px;font-family:sans-serif;z-index:99"><h1>Jordy Brian GBOKO — Développeur Full Stack</h1><p>Activez JavaScript pour explorer la carte interactive. Contact : briangboko33@gmail.com</p></div></noscript>
 
 <script src="js/data.js"></script>
+<script src="js/projects.js"></script>
+<script src="js/sims/iris.js"></script>
+<script src="js/sims/sika.js"></script>
+<script src="js/sims/swipjob.js"></script>
+<script src="js/sims/ivoirecar.js"></script>
+<script src="js/sims/eelips.js"></script>
+<script src="js/sims/ebonus.js"></script>
+<script src="js/sims/homefit.js"></script>
+<script src="js/sims/tonty.js"></script>
+<script src="js/sims/agrikonnect.js"></script>
+<script src="js/museum.js"></script>
+<script src="js/visits.js"></script>
 <script src="js/hoops.js"></script>
 <script src="js/game.js"></script>
 </body>

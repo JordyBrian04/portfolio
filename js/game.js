@@ -23,7 +23,7 @@ const el = {
   progBar: $('#progBar'), progTxt: $('#progTxt')
 };
 $('#btnMenu').innerHTML = icon('map', 18) + '<span class="lbl">Carte</span>';
-$('#btnClassic').innerHTML = icon('file', 18) + '<span class="lbl">Version CV</span>';
+$('#btnClassic').innerHTML = icon('file', 18) + '<span class="lbl">Version site</span>';
 $('#classicClose').innerHTML = icon('map', 18) + '<span class="lbl">Retour à la carte</span>';
 $('#panelClose').innerHTML = icon('x', 18);
 $('#menuClose').innerHTML = icon('x', 18);
@@ -40,7 +40,7 @@ const S = {
 };
 try { JSON.parse(localStorage.getItem('jb-visited') || '[]').forEach(id => S.visited.add(id)); } catch (e) {}
 const byId = Object.fromEntries(Z.map(z => [z.id, z]));
-const paused = () => S.introOpen || S.panelOpen || S.classicOpen;
+const paused = () => S.introOpen || S.panelOpen || S.classicOpen || document.body.classList.contains('mu-open');
 
 let vw = 0, vh = 0, dpr = 1, zoom = 1;
 function resize() {
@@ -286,7 +286,7 @@ function sign(text, cx, cy, w, bg, fg, size = 12) {
 }
 
 function drawBuilding(z) {
-  ({ house, tower, lab, gallery, school, post, studio, court })[z.type](z);
+  ({ house, tower, lab, gallery, school, post, studio, court, museum })[z.type](z);
 }
 
 function house(z) {
@@ -388,6 +388,38 @@ function school(z) {
     ctx.closePath(); ctx.fill();
   });
   ctx.fillStyle = '#d4a017'; ctx.beginPath(); ctx.arc(px, y - 72, 4, 0, TAU); ctx.fill();
+}
+
+function museum(z) {
+  const { x, y, w, h } = z, t = S.t; shadow(z);
+  // dôme
+  const dg = ctx.createLinearGradient(0, y - 64, 0, y); dg.addColorStop(0, '#f6d58b'); dg.addColorStop(1, '#c9973f');
+  ctx.fillStyle = dg; ctx.beginPath(); ctx.ellipse(x + w / 2, y + 2, w * .2, 62, 0, Math.PI, 0); ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,.35)'; ctx.beginPath(); ctx.ellipse(x + w / 2 - 22, y - 30, 16, 9, -.5, 0, TAU); ctx.fill();
+  ctx.fillStyle = '#b07f2c'; ctx.fillRect(x + w / 2 - 2, y - 80, 4, 20); ctx.beginPath(); ctx.arc(x + w / 2, y - 82, 5, 0, TAU); ctx.fill();
+  // corps
+  ctx.fillStyle = '#f4efe4'; rr(x, y, w, h, 6); ctx.fill();
+  ctx.fillStyle = '#e4dccb'; ctx.fillRect(x - 12, y - 6, w + 24, 16);
+  ctx.fillStyle = '#d8ccb3'; ctx.fillRect(x - 12, y + 8, w + 24, 4);
+  // bannières des projets entre les colonnes
+  const cols = ['#265ed7', '#004ac6', '#0F6B4C', '#F97316', '#009689', '#2f95dc'];
+  const n = 6, gap = (w - 40) / n;
+  for (let i = 0; i < n; i++) {
+    const bx = x + 20 + i * gap + gap / 2;
+    if (i === 2 || i === 3) continue;
+    const sw = reduce ? 0 : Math.sin(t * 1.6 + i) * 1.5;
+    ctx.fillStyle = cols[i]; ctx.beginPath(); ctx.moveTo(bx - 14, y + 26); ctx.lineTo(bx + 14, y + 26); ctx.lineTo(bx + 14 + sw, y + 110); ctx.lineTo(bx + sw, y + 100); ctx.lineTo(bx - 14 + sw, y + 110); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,.85)'; ctx.beginPath(); ctx.arc(bx + sw * .5, y + 52, 6, 0, TAU); ctx.fill();
+  }
+  for (let i = 0; i <= n; i++) { const cx = x + 20 + i * gap - 6; ctx.fillStyle = '#fffaf0'; ctx.fillRect(cx, y + 16, 12, h - 40); ctx.fillStyle = 'rgba(0,0,0,.07)'; ctx.fillRect(cx + 8, y + 16, 4, h - 40); }
+  // marches et porte vitrée
+  ctx.fillStyle = '#e6dcc5'; ctx.fillRect(x - 8, y + h - 22, w + 16, 10); ctx.fillStyle = '#d6c9ab'; ctx.fillRect(x - 16, y + h - 12, w + 32, 12);
+  const dw = 78, dx = x + w / 2 - dw / 2, dy = y + h - 22;
+  ctx.fillStyle = '#9cd7f0'; rr(dx, dy - 96, dw, 96, [39, 39, 0, 0]); ctx.fill();
+  const lg = ctx.createRadialGradient(x + w / 2, dy - 40, 4, x + w / 2, dy - 40, 70); lg.addColorStop(0, 'rgba(255,230,150,.8)'); lg.addColorStop(1, 'rgba(255,230,150,0)');
+  ctx.fillStyle = lg; ctx.fillRect(dx, dy - 96, dw, 96);
+  ctx.fillStyle = 'rgba(255,255,255,.45)'; ctx.fillRect(x + w / 2 - 1, dy - 96, 2, 96);
+  sign('MUSÉE DES PROJETS', x + w / 2, y + h - 140, 190, '#2b2340', '#ffd27a', 12);
 }
 
 function post(z) {
@@ -725,6 +757,10 @@ function countUp(root) {
 function nextZone(z) { return Z.find(q => !S.visited.has(q.id) && q !== z) || Z[(Z.indexOf(z) + 1) % Z.length]; }
 
 function openZone(z) {
+  if (z.type === 'museum' && window.Museum) {
+    S.visited.add(z.id); try { localStorage.setItem('jb-visited', JSON.stringify([...S.visited])); } catch (e) {}
+    renderProgress(); window.Museum.open(); return;
+  }
   closeMenu();
   S.panelOpen = z.id; S.guide = null;
   el.panel.style.setProperty('--z', z.color);
@@ -771,8 +807,8 @@ function buildClassic() {
 }
 function openClassic() { S.classicOpen = true; el.classic.classList.add('open'); el.classic.setAttribute('aria-hidden', 'false'); el.classic.scrollTop = 0; closeMenu(); updatePrompt(); countUp(el.classic); }
 function closeClassic() { S.classicOpen = false; el.classic.classList.remove('open'); el.classic.setAttribute('aria-hidden', 'true'); updatePrompt(); }
-$('#btnClassic').onclick = openClassic; $('#classicClose').onclick = closeClassic;
-$('#btnIntroClassic').onclick = () => { el.intro.classList.add('gone'); S.introOpen = false; openClassic(); };
+$('#btnClassic').onclick = () => { location.href = 'site.html'; }; $('#classicClose').onclick = closeClassic;
+$('#btnIntroClassic').onclick = () => { location.href = 'site.html'; };
 
 function startGame() {
   el.intro.classList.add('gone'); S.introOpen = false; S.idle = 0;

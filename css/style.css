@@ -224,3 +224,8 @@ ol.top10 .empty{display:block;color:var(--muted)}
 .hoops-over .btns{justify-content:center}
 .hoops-over .btn{cursor:pointer;border:1px solid var(--line)}
 .hoops-over .btn.primary{border-color:var(--blue)}
+
+/* Compteur de visites */
+.pill.visits{cursor:default;gap:6px}
+.pill.visits b{font:800 13px var(--f-head)}
+.pill.visits[hidden]{display:none}

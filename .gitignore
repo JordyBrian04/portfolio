@@ -4,3 +4,5 @@ deploy/
 portfolio-deploy.zip
 node_modules/
 brag-output/
+ops/config.sh
+server/data/
